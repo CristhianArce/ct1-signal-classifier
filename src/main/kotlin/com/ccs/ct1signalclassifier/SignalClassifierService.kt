@@ -6,6 +6,7 @@ import com.ccs.ct1signalclassifier.dto.SignalType
 import com.ccs.ct1signalclassifier.sqs.SqsMessageSender
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,6 +18,7 @@ class SignalClassifierService(
         @Value("\${aws.sqs.info-queue}")  private val informativeQueue: String) {
 
 
+    @Async
     fun save(signal: Signal): ProcessedSignalMessage {
         when (signal.type) {
             SignalType.EMERGENCY -> sendMessage(signal, emergencyQueue)
